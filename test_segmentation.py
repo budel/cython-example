@@ -28,7 +28,9 @@ class TestSegmentation(unittest.TestCase):
         print("")
         N = 10**3
         img = np.random.randint(256, size=(N, N, 3), dtype=np.uint8)
+        img = np.ascontiguousarray(img)
         means = np.random.rand(self.cluster_n, 3)
+        means = np.ascontiguousarray(means)
         begin_time = time.time()
         segmentationSeq = runSequentialSegmentation(img, means)
         print(f"SeqSegmentation took {time.time() - begin_time}")

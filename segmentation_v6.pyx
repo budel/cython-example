@@ -11,17 +11,14 @@ from cython.parallel import prange
 def runSequentialSegmentation(unsigned char[:, :, ::1] image, double[:, ::1] means):
     cdef int i
     cdef int j
-    cdef unsigned char retval
     cdef Py_ssize_t img_size0 = image.shape[0]
     cdef Py_ssize_t img_size1 = image.shape[1]
     segmentation = np.zeros((img_size0, img_size1), dtype=np.uint8)
     segmentation = np.ascontiguousarray(segmentation)
     cdef unsigned char[:, ::1] seg_view = segmentation
-    cdef unsigned char[:, :, ::1] img_view = image
     for i in prange(img_size0, nogil=True):
         for j in range(img_size1):
-            #seg_view[i, j] = sequentialSegmentation(img_view[i, j], means)
-            retval = sequentialSegmentation(img_view[i, j], means)
+            seg_view[i, j] = sequentialSegmentation(image[i, j], means)
     return segmentation
 
 @cython.boundscheck(False)  # Deactivate bounds checking
@@ -33,7 +30,7 @@ cdef unsigned char sequentialSegmentation(unsigned char[::1] p, double[:, ::1] m
     cdef int i
     cdef unsigned char p_i
     cdef double m_i
-    cdef double sqnorm = 0
+    cdef double sqnorm
     cdef Py_ssize_t means_size = means.shape[0]
     cdef Py_ssize_t p_size = p.shape[0]
 

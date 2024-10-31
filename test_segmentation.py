@@ -4,9 +4,10 @@ import unittest
 import numpy as np
 from naive_segmentation import runSequentialSegmentation
 from segmentation_v1 import runSequentialSegmentation as runSegmentation1
-from segmentation_v2 import runSequentialSegmentation as runSegmentation2
-# from segmentation_v2_without_numpy import runSequentialSegmentation as runSegmentation2
-
+# from segmentation_v2 import runSequentialSegmentation as runSegmentation2
+from segmentation_v2_without_numpy import runSequentialSegmentation as runSegmentation2
+from segmentation_v3 import runSequentialSegmentation as runSegmentation3
+ 
 
 class TestSegmentation(unittest.TestCase):
     def setUp(self):
@@ -15,7 +16,6 @@ class TestSegmentation(unittest.TestCase):
             dtype=np.uint8,
         )
         self.means = np.array([[1, 1, 1], [4, 4, 4], [7, 7, 7]], dtype=np.float64)
-        self.mask = np.ones((self.img.shape[:2]), dtype=np.uint8)
         self.cluster_n = 3
 
     def test_run(self):
@@ -25,20 +25,23 @@ class TestSegmentation(unittest.TestCase):
 
     def test_regression(self):
         print("")
-        N = 10**6
-        flat_img = np.random.randint(256, size=(N, 3), dtype=np.uint8)
+        N = 10**3
+        img = np.random.randint(256, size=(N, N, 3), dtype=np.uint8)
         means = np.random.rand(self.cluster_n, 3)
         begin_time = time.time()
-        segmentationSeq = runSequentialSegmentation(flat_img, means)
+        segmentationSeq = runSequentialSegmentation(img, means)
         print(f"SeqSegmentation took {time.time() - begin_time}")
         begin_time = time.time()
-        segmentation1 = runSegmentation1(flat_img, means)
+        segmentation1 = runSegmentation1(img, means)
         print(f"Segmentation1 took {time.time() - begin_time}")
         begin_time = time.time()
-        segmentation2 = runSegmentation2(flat_img, means)
+        segmentation2 = runSegmentation2(img, means)
         print(f"Segmentation2 took {time.time() - begin_time}")
         np.array_equal(segmentationSeq, segmentation2)
-
+        begin_time = time.time()
+        segmentation3 = runSegmentation3(img, means)
+        print(f"Segmentation3 took {time.time() - begin_time}")
+        np.array_equal(segmentationSeq, segmentation3)
 
 
 if __name__ == "__main__":

@@ -1,13 +1,15 @@
 import numpy as np
 
 def runSequentialSegmentation(unsigned char[:, :, :] image, double[:, :] means):
+    cdef int i
+    cdef int j
     cdef Py_ssize_t img_size0 = image.shape[0]
     cdef Py_ssize_t img_size1 = image.shape[1]
     segmentation = np.zeros((img_size0, img_size1), dtype=np.uint8)
     cdef unsigned char[:, :] seg_view = segmentation
     for i in range(img_size0):
         for j in range(img_size1):
-            segmentation[i, j] = sequentialSegmentation(image[i, j], means)
+            seg_view[i, j] = sequentialSegmentation(image[i, j], means)
     return segmentation
 
 cdef sequentialSegmentation(unsigned char[:] p, double[:, :] means):

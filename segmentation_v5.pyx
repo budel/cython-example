@@ -12,7 +12,7 @@ def runSequentialSegmentation(unsigned char[:, :, ::1] image, double[:, ::1] mea
     cdef unsigned char[:, ::1] seg_view = segmentation
     for i in range(img_size0):
         for j in range(img_size1):
-            segmentation[i, j] = sequentialSegmentation(image[i, j], means)
+            seg_view[i, j] = sequentialSegmentation(image[i, j], means)
     return segmentation
 
 @cython.boundscheck(False)  # Deactivate bounds checking

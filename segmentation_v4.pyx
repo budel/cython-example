@@ -18,7 +18,7 @@ def runSequentialSegmentation(unsigned char[:, :, ::1] image, double[:, ::1] mea
 
 @cython.boundscheck(False)  # Deactivate bounds checking
 @cython.wraparound(False)   # Deactivate negative indexing.
-cdef sequentialSegmentation(unsigned char[::1] p, double[:, ::1] means):
+cdef unsigned char sequentialSegmentation(unsigned char[::1] p, double[:, ::1] means):
     cdef unsigned char argmin 
     cdef double curmin = 2**8*2
     cdef int idx

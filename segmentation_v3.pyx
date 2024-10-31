@@ -12,7 +12,7 @@ def runSequentialSegmentation(unsigned char[:, :, :] image, double[:, :] means):
             seg_view[i, j] = sequentialSegmentation(image[i, j], means)
     return segmentation
 
-cdef sequentialSegmentation(unsigned char[:] p, double[:, :] means):
+cdef unsigned char sequentialSegmentation(unsigned char[:] p, double[:, :] means):
     cdef unsigned char argmin 
     cdef double curmin = 2**8*2
     cdef int idx

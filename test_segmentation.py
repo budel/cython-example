@@ -4,8 +4,8 @@ import unittest
 import numpy as np
 from naive_segmentation import runSequentialSegmentation
 from segmentation_v1 import runSequentialSegmentation as runSegmentation1
-# from segmentation_v2 import runSequentialSegmentation as runSegmentation2
-from segmentation_v2_without_numpy import runSequentialSegmentation as runSegmentation2
+from segmentation_v2 import runSequentialSegmentation as runSegmentation2
+from segmentation_v2_without_numpy import runSequentialSegmentation as runSegmentation2_without_numpy
 from segmentation_v3 import runSequentialSegmentation as runSegmentation3
 from segmentation_v4 import runSequentialSegmentation as runSegmentation4
 from segmentation_v5 import runSequentialSegmentation as runSegmentation5
@@ -28,7 +28,7 @@ class TestSegmentation(unittest.TestCase):
 
     def test_regression(self):
         print("")
-        N = 10**3
+        N = 1000
         img = np.random.randint(256, size=(N, N, 3), dtype=np.uint8)
         img = np.ascontiguousarray(img)
         means = np.random.randint(256, size=(self.cluster_n, 3)).astype(np.float64)
@@ -43,6 +43,10 @@ class TestSegmentation(unittest.TestCase):
         begin_time = time.time()
         segmentation2 = runSegmentation2(img, means)
         print(f"Segmentation2 took {time.time() - begin_time}")
+        np.array_equal(segmentation0, segmentation2)
+        begin_time = time.time()
+        segmentation2 = runSegmentation2_without_numpy(img, means)
+        print(f"Segmentation2 without numpy took {time.time() - begin_time}")
         np.array_equal(segmentation0, segmentation2)
         begin_time = time.time()
         segmentation3 = runSegmentation3(img, means)

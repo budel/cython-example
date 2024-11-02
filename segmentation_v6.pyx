@@ -16,7 +16,7 @@ def runSequentialSegmentation(unsigned char[:, :, ::1] image, double[:, ::1] mea
     segmentation = np.zeros((img_size0, img_size1), dtype=np.uint8)
     segmentation = np.ascontiguousarray(segmentation)
     cdef unsigned char[:, ::1] seg_view = segmentation
-    for i in prange(img_size0, nogil=True):
+    for i in prange(img_size0, nogil=True, schedule='static'):
         for j in range(img_size1):
             seg_view[i, j] = sequentialSegmentation(image[i, j], means)
     return segmentation

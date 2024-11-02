@@ -10,6 +10,8 @@ setup(
         "segmentation_v4.pyx",
         "segmentation_v5.pyx",
         "segmentation_v6.pyx",
-    ], annotate=True),
+    ],
+    annotate=True,
+    )
 )
 

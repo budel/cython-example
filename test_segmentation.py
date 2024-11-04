@@ -4,6 +4,9 @@ import unittest
 import numpy as np
 from naive_segmentation import runSequentialSegmentation
 from segmentation_v1 import runSequentialSegmentation as runSegmentation1
+from segmentation_v2_without_numpy import (
+    runSequentialSegmentation as runSegmentation2_without_numpy,
+)
 
 
 class TestSegmentation(unittest.TestCase):
@@ -34,6 +37,10 @@ class TestSegmentation(unittest.TestCase):
         segmentation1 = runSegmentation1(img, means)
         print(f"Segmentation1 took {time.time() - begin_time}")
         np.array_equal(segmentation0, segmentation1)
+        begin_time = time.time()
+        segmentation2 = runSegmentation2_without_numpy(img, means)
+        print(f"Segmentation2 took {time.time() - begin_time}")
+        np.array_equal(segmentation0, segmentation2)
 
 
 if __name__ == "__main__":

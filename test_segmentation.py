@@ -5,13 +5,15 @@ import numpy as np
 from naive_segmentation import runSequentialSegmentation
 from segmentation_v1 import runSequentialSegmentation as runSegmentation1
 from segmentation_v2 import runSequentialSegmentation as runSegmentation2
-from segmentation_v2_without_numpy import runSequentialSegmentation as runSegmentation2_without_numpy
+from segmentation_v2_without_numpy import (
+    runSequentialSegmentation as runSegmentation2_without_numpy,
+)
 from segmentation_v3 import runSequentialSegmentation as runSegmentation3
 from segmentation_v4 import runSequentialSegmentation as runSegmentation4
 from segmentation_v5 import runSequentialSegmentation as runSegmentation5
 from segmentation_v6 import runSequentialSegmentation as runSegmentation6
 from segmentation_v7 import runSequentialSegmentation as runSegmentation7
- 
+
 
 class TestSegmentation(unittest.TestCase):
     def setUp(self):
@@ -61,10 +63,10 @@ class TestSegmentation(unittest.TestCase):
         segmentation5 = runSegmentation5(img, means)
         print(f"Segmentation5 took {time.time() - begin_time}")
         np.array_equal(segmentation0, segmentation5)
-#        begin_time = time.time()
-#        segmentation6 = runSegmentation6(img, means)
-#        print(f"Segmentation6 took {time.time() - begin_time}")
-#        np.array_equal(segmentation0, segmentation6)
+        #        begin_time = time.time()
+        #        segmentation6 = runSegmentation6(img, means)
+        #        print(f"Segmentation6 took {time.time() - begin_time}")
+        #        np.array_equal(segmentation0, segmentation6)
         begin_time = time.time()
         segmentation7 = runSegmentation7(img, means)
         print(f"Segmentation7 took {time.time() - begin_time}")

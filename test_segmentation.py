@@ -3,6 +3,7 @@ import unittest
 
 import numpy as np
 from naive_segmentation import runSequentialSegmentation
+from segmentation_v1 import runSequentialSegmentation as runSegmentation1
 
 
 class TestSegmentation(unittest.TestCase):
@@ -12,7 +13,6 @@ class TestSegmentation(unittest.TestCase):
             dtype=np.uint8,
         )
         self.means = np.array([[1, 1, 1], [4, 4, 4], [7, 7, 7]], dtype=np.float64)
-        self.mask = np.ones((self.img.shape[:2]), dtype=np.uint8)
         self.cluster_n = 3
 
     def test_run(self):
@@ -22,12 +22,18 @@ class TestSegmentation(unittest.TestCase):
 
     def test_regression(self):
         print("")
-        N = 10**6
-        flat_img = np.random.randint(256, size=(N, 3), dtype=np.uint8)
-        means = np.random.rand(self.cluster_n, 3)
+        N = 1000
+        img = np.random.randint(256, size=(N, N, 3), dtype=np.uint8)
+        img = np.ascontiguousarray(img)
+        means = np.random.randint(256, size=(self.cluster_n, 3)).astype(np.float64)
+        means = np.ascontiguousarray(means)
         begin_time = time.time()
-        segmentationSeq = runSequentialSegmentation(flat_img, means)
-        print(f"SeqSegmentation took {time.time() - begin_time}")
+        segmentation0 = runSequentialSegmentation(img, means)
+        print(f"Naive Segmentation took {time.time() - begin_time}")
+        begin_time = time.time()
+        segmentation1 = runSegmentation1(img, means)
+        print(f"Segmentation1 took {time.time() - begin_time}")
+        np.array_equal(segmentation0, segmentation1)
 
 
 if __name__ == "__main__":

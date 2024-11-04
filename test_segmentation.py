@@ -8,6 +8,7 @@ from segmentation_v2_without_numpy import (
     runSequentialSegmentation as runSegmentation2_without_numpy,
 )
 from segmentation_v3 import runSequentialSegmentation as runSegmentation3
+from segmentation_v4 import runSequentialSegmentation as runSegmentation4
 
 
 class TestSegmentation(unittest.TestCase):
@@ -46,6 +47,10 @@ class TestSegmentation(unittest.TestCase):
         segmentation3 = runSegmentation3(img, means)
         print(f"Segmentation3 took {time.time() - begin_time}")
         np.array_equal(segmentation0, segmentation3)
+        begin_time = time.time()
+        segmentation4 = runSegmentation4(img, means)
+        print(f"Segmentation4 took {time.time() - begin_time}")
+        np.array_equal(segmentation0, segmentation4)
 
 
 if __name__ == "__main__":

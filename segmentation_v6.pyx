@@ -29,8 +29,9 @@ def runSequentialSegmentation(unsigned char[:, :, ::1] image, double[:, ::1] mea
     for i in prange(img_size0, nogil=True, schedule='static'):
         for j in range(img_size1):
             for idx in range(means_size):
+                sqnorm = 0
                 for k in range(img_size2):
-                    sqnorm = image[i, j, k] * means[idx, k]
+                    sqnorm = sqnorm + (image[i, j, k] - means[idx, i]) ** 2
                 # norm = sqnorm ** 0.5
                 if sqnorm < curmin:
                     argmin = idx

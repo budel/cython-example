@@ -24,8 +24,9 @@ cdef unsigned char sequentialSegmentation(unsigned char[:] p, double[:, :] means
     cdef Py_ssize_t p_size = p.shape[0]
 
     for idx in range(means_size):
+        sqnorm = 0
         for i in range(p_size):
-            sqnorm = p[i] * means[idx, i]
+            sqnorm += (p[i] - means[idx, i]) ** 2
         # norm = sqnorm ** 0.5
         if sqnorm < curmin:
             argmin = idx

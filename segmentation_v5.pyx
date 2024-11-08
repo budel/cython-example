@@ -17,14 +17,15 @@ def runSequentialSegmentation(unsigned char[:, :, ::1] image, double[:, ::1] mea
 
 @cython.boundscheck(False)  # Deactivate bounds checking
 @cython.wraparound(False)   # Deactivate negative indexing.
-cdef sequentialSegmentation(unsigned char[::1] p, double[:, ::1] means):
+cdef unsigned char sequentialSegmentation(unsigned char[::1] p, double[:, ::1] means):
     curmin = 2.0**8*2
     means_size = means.shape[0]
     p_size = p.shape[0]
 
     for idx in range(means_size):
+        sqnorm = 0
         for i in range(p_size):
-            sqnorm = p[i] * means[idx, i]
+            sqnorm += (p[i] - means[idx, i]) ** 2
         # norm = sqnorm ** 0.5
         if sqnorm < curmin:
             argmin = idx

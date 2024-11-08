@@ -18,8 +18,9 @@ cdef sequentialSegmentation(p, means):
     cdef Py_ssize_t means_size = means.shape[0]
 
     for idx in range(means_size):
+        sqnorm = 0
         for p_i, m_i in zip(p, means[idx]):
-            sqnorm = p_i * m_i
+            sqnorm += (p_i - m_i) ** 2
         # norm = sqnorm ** 0.5
         if sqnorm < curmin:
             argmin = idx
